@@ -127,13 +127,13 @@ def boxplot_freq(table : pd.DataFrame, log_scale : bool):
     sns.boxplot(x = table['Mutation_Pathways'],
                 y = y_data,
                 linewidth=1, 
-                palette = [teal, "salmon", orange])
+                palette = [teal, "cornflowerblue", orange])
 
     if (log_scale):
         plt.yticks(yticks, ylabels)
 
     # Labels
-    plt.xlabel("Mutation Pathways") # fontsize = 10
+    plt.xlabel("Genetic Code Pathways") # fontsize = 10
     plt.ylabel("Observed Mutations") # fontsize = 10
 
     plt.show()
@@ -146,15 +146,21 @@ def plot_regression(data: pd.DataFrame, x_vals: np.ndarray, y_pred: np.ndarray):
     yticks = np.log1p([0, 1, 10, 100, 500, 800])
     ylabels = [0, 1, 10, 100, 500, 800]
 
-    x_data = data['Mutation_Pathways']
+    x_data = data['Mutation_Pathways'].copy()
+    
+    # Add small random noise (jitter) where x == 1
+    jitter_strength = 0.03  # How much jitter
+    jitter = np.random.uniform(-jitter_strength, jitter_strength, size=x_data.shape)
+    x_data_jittered = x_data + np.where(x_data == 1, jitter, 0)
+
     x_ticks = [1, 2, 3]
     x_labels = [1, 2, 3]
 
-    plt.scatter(x_data, y_data, alpha=0.6, label="Observed data", color = teal)
+    plt.scatter(x_data_jittered, y_data, alpha=0.6, label="Observed data", color = teal)
 
     plt.plot(x_vals, y_pred, color=orange, linewidth=2, label="Fitted regression line")
 
-    plt.xlabel("Number of Mutational Pathways")
+    plt.xlabel("Genetic Code Pathways")
     plt.ylabel("Observed Mutations")
     plt.legend()
 
@@ -235,5 +241,22 @@ def combine_distribution_graph(data: pd.DataFrame, sorted: bool = False, log_sca
     axs[1].set_ylabel("Count")
     axs[1].grid(True, axis='y', linestyle='--', alpha=0.4)
 
+    plt.tight_layout()
+    plt.show()
+
+def transition_bias(data: pd.DataFrame):
+    plt.figure(figsize=(5,4))
+    sns.barplot(x=data.index, y=data.values, palette = [teal, orange])
+    plt.ylabel('Total Events')
+    plt.xlabel('Mutation Type')
+    plt.tight_layout()
+    plt.show()
+
+def substitution_bias(data: pd.DataFrame):
+    plt.figure(figsize=(10,6))
+    sns.barplot(x=data.index, y=data.values, palette=[teal, "cornflowerblue", orange, "#4EA72E", "#EF857D", "#156082"])
+    plt.ylabel('Total Events')
+    plt.xlabel('Single-nucleotide Substitution Type')
+    plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
