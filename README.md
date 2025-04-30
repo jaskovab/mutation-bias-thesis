@@ -1,4 +1,4 @@
-# The influence of mutation bias on adaptive evolution
+# The Influence of Mutation Bias on Adaptive Evolution
 ## Bachelor thesis
 
 ### Abstract
