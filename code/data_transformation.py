@@ -105,8 +105,8 @@ def seperate_interesting_codons(mutation_hash: dict) -> list:
             continue
         if has_different_counts(get_mutation_ratios(mutation_hash, codon)):
             codons_of_interest.append(codon)
-        else:
-            print(get_mutation_ratios(mutation_hash, codon))
+        #else:
+        #    print(get_mutation_ratios(mutation_hash, codon))
     return codons_of_interest
 
 # Sanity checks for the data
@@ -133,6 +133,7 @@ def sanity_checks(data, mutation_hash : dict):
         if row['Mutation_Pathways'] == 0:
             print(f"Sanity check failed for Codon {row['Codon']}: 'Mutation_Pathways' is 0, but mutation exists.")
 
+"""
 def is_it_transition(init_base: str, alt_base: str) -> bool:
     purines = ['A', 'G']
     pyrimidines = ['C', 'T']
@@ -161,12 +162,10 @@ def transition_tryout(file_path: str):
     import seaborn as sns
 
     plt.figure(figsize=(7,5))
-    """
     sns.boxplot(x = data['Transition'],
                 y = data['Events'],
                 linewidth=1)
     counts, bins, patches = plt.hist(data['Transition'], bins=2, edgecolor='white')
-                """
     summed_events = data.groupby('Transition')['Events'].sum().sort_index()
     print(summed_events)
     print(summed_events[1] / summed_events[0])
@@ -177,3 +176,4 @@ def transition_tryout(file_path: str):
     plt.show()
 
 transition_tryout("../data/data_nuc_changes.csv")
+"""
